@@ -24,12 +24,14 @@
   <div id="lad">No data</div>
   <h2 id="stat"> To see all the data sent in the last hour with their respctive status, go to the following <a href="https://demo.thingsboard.io:/dashboard/b61584a0-9466-11ea-9a66-358c6522b855?publicId=d2ff5950-6a96-11ea-8e0a-7d0ef2a682d3">dashboard</a> developed thanks to <a href="https://thingsboard.io">ThingsBoard</a></h2>
   <script>
+    let access_token = 'qD0VYMtFyBPNCDj2Kol4';
     let lad = document.getElementById('lad');
     let stat = document.getElementById('stat');
     let ip = document.getElementById('ip').innerHTML;
 
     if ( 'LinearAccelerationSensor' in window ) {
       var win = 4;
+      let data = [];
       var x_array = [];
       var y_array = [];
       var z_array = [];
@@ -43,33 +45,34 @@
         console.log('x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z);
         if(i<win){
         	//save values in array
-          x_array[i] = Math.abs(la.target.x);
-          y_array[i] = Math.abs(la.target.y);
-          z_array[i] = Math.abs(la.target.z);
-          console.log("i:"+i);
+            data[i]({x: Math.abs(la.target.x), y: Math.abs(la.target.y), z: Math.abs(la.target.z)});
           i++;
         }else{
+
+        let payload = {
+            ip: ip,
+            data: data
+        };
+        let msg = JSON.stringify(payload);
+
         	//create message to be sent to thingsboard
-          var msg = "{\"ip\":" + ip +",\n\"data\":[\n"
-          			+"{\"x\":"+x_array[0]+",\"y\":"+y_array[0]+",\"z\":"+z_array[0]+"},\n"
-          			+"{\"x\":"+x_array[1]+",\"y\":"+y_array[1]+",\"z\":"+z_array[1]+"},\n"
-          			+"{\"x\":"+x_array[2]+",\"y\":"+y_array[2]+",\"z\":"+z_array[2]+"},\n"
-          			+"{\"x\":"+x_array[3]+",\"y\":"+y_array[3]+",\"z\":"+z_array[3]+"}\n"
-          			+"]\n}";
+          //var msg = "{\"ip\":" + ip +",\n\"data\":[\n"
+          //			+"{\"x\":"+x_array[0]+",\"y\":"+y_array[0]+",\"z\":"+z_array[0]+"},\n"
+          //			+"{\"x\":"+x_array[1]+",\"y\":"+y_array[1]+",\"z\":"+z_array[1]+"},\n"
+          //			+"{\"x\":"+x_array[2]+",\"y\":"+y_array[2]+",\"z\":"+z_array[2]+"},\n"
+          //			+"{\"x\":"+x_array[3]+",\"y\":"+y_array[3]+",\"z\":"+z_array[3]+"}\n"
+          //			+"]\n}";`
           console.log(msg);
 
           //TODO: send the message
           const Http = new XMLHttpRequest();
-          const url= "https://demo.thingsboard.io/api/v1/avwT7Z0xtZAvmhO59kd5/telemetry";
+          const url= `https://demo.thingsboard.io/api/v1/${access_token}/telemetry`;
           Http.open("POST",url);
           Http.send(msg);
 
           //restart the time window
           i=0;
-
-          x_array[i] = Math.abs(la.target.x);
-          y_array[i] = Math.abs(la.target.y);
-          z_array[i] = Math.abs(la.target.z);
+          data[i]({x: Math.abs(la.target.x), y: Math.abs(la.target.y), z: Math.abs(la.target.z)});
         }
       });
       //start sensor
