@@ -79,7 +79,7 @@
         	//save values in array
             data[i] = {x: Math.abs(la.target.x), y: Math.abs(la.target.y), z: Math.abs(la.target.z)};
           i++;
-          print("<");
+          print(i);
         }else{
             print(">");
             let payload = {
@@ -103,7 +103,7 @@
           Http.open("POST",url);
           Http.send(msg);
           Http.onreadystatechange = (e) => {
-                print(Http.responseText)
+                print(Http.responseText, false)
             }
           //restart the time window
           i=0;
