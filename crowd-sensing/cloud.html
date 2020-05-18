@@ -46,8 +46,11 @@
     let stat = document.getElementById('stat');
     let ip = document.getElementById('ip').innerHTML;
     let cnsl = document.getElementById('cnsl');
-    function print(text){
-        cnsl.innerHTML = text;
+    function print(text, append=true){
+        if(append)
+            cnsl.innerHTML += text;
+        else
+            cnsl.innerHTML = text;
     }
 
     let x = document.getElementById('x');
