@@ -76,14 +76,14 @@
         	//save values in array
             data[i]({x: Math.abs(la.target.x), y: Math.abs(la.target.y), z: Math.abs(la.target.z)});
           i++;
-          print(i);
+          print("<");
         }else{
-        print(data);
-        let payload = {
-            ip: ip,
-            data: data
-        };
-        let msg = JSON.stringify(payload);
+            print(">");
+            let payload = {
+                ip: ip,
+                data: data
+            };
+            let msg = JSON.stringify(payload);
 
         	//create message to be sent to thingsboard
           //var msg = "{\"ip\":" + ip +",\n\"data\":[\n"
