@@ -36,19 +36,19 @@
     let ip = document.getElementById('ip').innerHTML;
 
     //thingsboard device access token
-    var token = "jiR0GCFal3uLslYtG3Ie";
+    let token = "BApw7f9Vxs5AhofNrRdf";
 
     //check sensor on device
     if ( 'LinearAccelerationSensor' in window ) {
       //a window is formed by 4 relevation 
-      var win = 4;
+      let win = 4;
 
       //array for saving retrived data locally
-      var x_array = [];
-      var y_array = [];
-      var z_array = [];
+      let x_array = [];
+      let y_array = [];
+      let z_array = [];
 
-      var i = 0;
+      let i = 0;
 
       //initialize sensor with frequency 1Hz
       let las = new LinearAccelerationSensor({frequency: 1});
@@ -66,17 +66,17 @@
           i++;
         }else{
           //compute standard deviation
-          var j;
+          let j;
           
           //l_sma = 1/win * sum(x_i+y_i+z_i)
-          var l_sma = 0;
+          let l_sma = 0;
           for(j=0; j<win; j++){
             l_sma += x_array[j] + y_array[j] + z_array[j]
           }
           l_sma /= win;
 
 
-          var sosd=0;
+          let sosd=0;
           //sosd = (sum(x_i+y_i+z_i - l_sma)^2 / win)^1/2
           for(j=0; j<win; j++){
             sosd += Math.pow(x_array[j] + y_array[j] + z_array[j] - l_sma,2);
@@ -95,13 +95,13 @@
           }
 
           //cerate message to be sent 
-          var msg = "{\"user\":" + ip +",\"status\":\""+stat.innerHTML+"\"}";
+          let msg = `{\"user\":${ip},\"status\":\"${stat.innerHTML}\"}`;
           console.log("msg"+msg);
 
           //TODO: send the message
 
           const Http = new XMLHttpRequest();
-          const url= "https://demo.thingsboard.io/api/v1/jiR0GCFal3uLslYtG3Ie/telemetry";
+          const url= `https://demo.thingsboard.io/api/v1/${token}/telemetry`;
           Http.open("POST",url);
           Http.send(msg);
 
