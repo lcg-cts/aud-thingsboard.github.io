@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edge based Human Activity Recognition</title>  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Francesco Colasante">
+  <meta charset="UTF-8">
+  <!-- CSS only -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+</head>
+<body>
+
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">Crowd sensing</h1>
+      <small>In this assignment we will built a mobile application to provide a crowd-sensing extension to our application.
+        We build on-top of the cloud-based and edge-based components developed in the first and second assignments.</small>
+    </div>
+    Francesco Colasante
+  </div>
+
+  
+  <h2> Your public IP address is : </h1>
+  <h2 id="ip"> ip address</h2>
+  <!--Get device public ip address -->
+  <script type="application/javascript">
+  function getIP(json) {
+    let ip = document.getElementById("ip");
+    ip.innerHTML = json.ip;
+  }
+  </script>
+
+  <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+
+
+  <h1>Linear Accelerometer raw data</h1>
+  <div id="lad">No data</div>
+  <div class="progress">
+    <div id="x" class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+     </div>
+     <div class="progress">
+      <div id="y" class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <div class="progress">
+      <div id="z" class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+  <div id="k"> Can't compute standard deviation</div>
+    <div id="stat" class="alert alert-success" role="alert">
+      Waiting for data
+  </h2>
+
+  <script>
+    let lad = document.getElementById('lad');
+    let x = document.getElementById('x');
+    let y = document.getElementById('y');
+    let z = document.getElementById('z');
+    let k = document.getElementById('k');
+    let stat = document.getElementById('stat');
+    let ip = document.getElementById('ip').innerHTML;
+
+    //thingsboard device access token
+    let token = "BApw7f9Vxs5AhofNrRdf";
+
+    //check sensor on device
+    if ( 'LinearAccelerationSensor' in window ) {
+      //a window is formed by 4 relevation 
+      let win = 4;
+
+      //array for saving retrived data locally
+      let x_array = [];
+      let y_array = [];
+      let z_array = [];
+
+      let i = 0;
+
+      //initialize sensor with frequency 1Hz
+      let las = new LinearAccelerationSensor({frequency: 1});
+      //function exectued at each detection
+      las.addEventListener('reading', function(la) {
+        // write values on html page
+        x.style.width = la.target.x*100 + "%";
+        y.style.width = la.target.y*100 + "%";
+        z.style.width = la.target.z*100 + "%";
+
+        lad.innerHTML = 'x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z;
+        console.log('x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z);
+        if(i<win){
+          //save values in the arrays
+          x_array[i] = Math.abs(la.target.x);
+          y_array[i] = Math.abs(la.target.y);
+          z_array[i] = Math.abs(la.target.z);
+          console.log("i:"+i);
+          i++;
+        }else{
+          //compute standard deviation
+          let j;
+          
+          //l_sma = 1/win * sum(x_i+y_i+z_i)
+          let l_sma = 0;
+          for(j=0; j<win; j++){
+            l_sma += x_array[j] + y_array[j] + z_array[j]
+          }
+          l_sma /= win;
+
+
+          let sosd=0;
+          //sosd = (sum(x_i+y_i+z_i - l_sma)^2 / win)^1/2
+          for(j=0; j<win; j++){
+            sosd += Math.pow(x_array[j] + y_array[j] + z_array[j] - l_sma,2);
+          }
+          sosd /= win;
+          sosd = Math.sqrt(sosd);
+          //print standard deviation on html page
+          k.innerHTML = "standard deviation: " + sosd;
+
+          //empirical treshold for standard deviation is 0.5
+          if(sosd<0.5){
+            stat.innerHTML = "Still";
+            stat.className = 'alert alert-danger'
+          }
+          else{
+            stat.innerHTML = "Moving";
+            stat.className = 'alert alert-success'
+          }
+
+          //cerate message to be sent 
+          let msg = `{\"user\":${ip},\"status\":\"${stat.innerHTML}\"}`;
+          console.log("msg"+msg);
+
+          //TODO: send the message
+
+          const Http = new XMLHttpRequest();
+          const url= `https://demo.thingsboard.io/api/v1/${token}/telemetry`;
+          Http.open("POST",url);
+          Http.send(msg);
+
+          //restert the loop
+          i=0;
+          x_array[i] = Math.abs(la.target.x);
+          y_array[i] = Math.abs(la.target.y);
+          z_array[i] = Math.abs(la.target.z);
+        }
+      });
+      //start the sensor
+      las.start();
+    }
+
+    //error messgae
+    else lad.innerHTML = 'Linear Accelerometer not supported';
+  </script>
+
+  <p> To see all the status sent in the last hour go to this <a href="https://demo.thingsboard.io:/dashboard/2169c140-9443-11ea-9a66-358c6522b855?publicId=d2ff5950-6a96-11ea-8e0a-7d0ef2a682d3"> dashboard </a> developed thank to <a href="https://thingsboard.io">ThingsBoard</a> </p>
+
+</body>
+</html>
