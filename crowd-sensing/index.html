@@ -11,6 +11,15 @@
 </head>
 <body>
 
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">Crowd sensing</h1>
+      <p class="lead">In this assignment we will built a mobile application to provide a crowd-sensing extension to our application.
+        We build on-top of the cloud-based and edge-based components developed in the first and second assignments.</p>
+    </div>
+  </div>
+
+  
   <h2> Your public IP address is : </h1>
   <h2 id="ip"> ip address</h2>
   <!--Get device public ip address -->
@@ -26,11 +35,16 @@
 
   <h1>Linear Accelerometer raw data</h1>
   <div id="lad">No data</div>
+  <div class="progress">
+    <div id="x" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+
   <div id="k"> Can't compute standard deviation</div>
   <h2 id="stat"> Wait for status</h2>
 
   <script>
     let lad = document.getElementById('lad');
+    let x = document.getElementById('x');
     let k = document.getElementById('k');
     let stat = document.getElementById('stat');
     let ip = document.getElementById('ip').innerHTML;
@@ -55,6 +69,7 @@
       //function exectued at each detection
       las.addEventListener('reading', function(la) {
         // write values on html page
+        x.style.width = la.target.x*100;
         lad.innerHTML = 'x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z;
         console.log('x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z);
         if(i<win){
