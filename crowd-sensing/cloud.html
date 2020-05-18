@@ -77,7 +77,7 @@
         //print('x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z);
         if(i<win){
         	//save values in array
-            data[i]({x: Math.abs(la.target.x), y: Math.abs(la.target.y), z: Math.abs(la.target.z)});
+            data[i] = {x: Math.abs(la.target.x), y: Math.abs(la.target.y), z: Math.abs(la.target.z)};
           i++;
           print("<");
         }else{
