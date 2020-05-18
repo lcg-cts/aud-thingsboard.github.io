@@ -37,6 +37,8 @@
   <div id="lad">No data</div>
   <div class="progress">
     <div id="x" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+    <div id="y" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+    <div id="z" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
   </div>
 
   <div id="k"> Can't compute standard deviation</div>
@@ -47,6 +49,8 @@
   <script>
     let lad = document.getElementById('lad');
     let x = document.getElementById('x');
+    let y = document.getElementById('y');
+    let z = document.getElementById('z');
     let k = document.getElementById('k');
     let stat = document.getElementById('stat');
     let ip = document.getElementById('ip').innerHTML;
@@ -72,6 +76,9 @@
       las.addEventListener('reading', function(la) {
         // write values on html page
         x.style.width = la.target.x*100 + "%";
+        y.style.width = la.target.y*100 + "%";
+        z.style.width = la.target.z*100 + "%";
+
         lad.innerHTML = 'x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z;
         console.log('x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z);
         if(i<win){
