@@ -22,7 +22,13 @@
 
   <h1>Linear Accelerometer raw data</h1>
   <div id="lad">No data</div>
+
   <h2 id="stat"> To see all the data sent in the last hour with their respctive status, go to the following <a href="https://demo.thingsboard.io:/dashboard/b61584a0-9466-11ea-9a66-358c6522b855?publicId=d2ff5950-6a96-11ea-8e0a-7d0ef2a682d3">dashboard</a> developed thanks to <a href="https://thingsboard.io">ThingsBoard</a></h2>
+  Console Log:
+  <div id="log" class="alert alert-dark" role="alert">
+    ...
+</div>
+
   <script>
     let access_token = 'qD0VYMtFyBPNCDj2Kol4';
     let lad = document.getElementById('lad');
@@ -63,13 +69,15 @@
           //			+"{\"x\":"+x_array[3]+",\"y\":"+y_array[3]+",\"z\":"+z_array[3]+"}\n"
           //			+"]\n}";`
           console.log(msg);
-
+            print(msg);
           //TODO: send the message
           const Http = new XMLHttpRequest();
           const url= `http://demo.thingsboard.io/api/v1/${access_token}/telemetry`;
           Http.open("POST",url);
           Http.send(msg);
-
+          Http.onreadystatechange = (e) => {
+                print(Http.responseText)
+            }
           //restart the time window
           i=0;
           data[i]({x: Math.abs(la.target.x), y: Math.abs(la.target.y), z: Math.abs(la.target.z)});
@@ -80,6 +88,10 @@
     }
     //error messgae
     else lad.innerHTML = 'Linear Accelerometer not supported';
+    let log = document.getElementById('id');
+    function print(text){
+        log.innerHTML = text;
+    }
   </script>
 
 </body>
