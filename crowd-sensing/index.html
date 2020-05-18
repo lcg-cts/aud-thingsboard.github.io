@@ -69,7 +69,7 @@
       //function exectued at each detection
       las.addEventListener('reading', function(la) {
         // write values on html page
-        x.style.width = la.target.x*100;
+        x.style.width = la.target.x*100 + "%";
         lad.innerHTML = 'x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z;
         console.log('x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z);
         if(i<win){
