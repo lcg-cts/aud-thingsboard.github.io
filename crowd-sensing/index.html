@@ -40,7 +40,9 @@
   </div>
 
   <div id="k"> Can't compute standard deviation</div>
-  <h2 id="stat"> Wait for status</h2>
+    <div id="stat" class="alert alert-success" role="alert">
+      Waiting for data
+  </h2>
 
   <script>
     let lad = document.getElementById('lad');
@@ -104,9 +106,11 @@
           //empirical treshold for standard deviation is 0.5
           if(sosd<0.5){
             stat.innerHTML = "Still";
+            stat.className = 'alert alert-danger'
           }
           else{
             stat.innerHTML = "Moving";
+            stat.className = 'alert alert-success'
           }
 
           //cerate message to be sent 
