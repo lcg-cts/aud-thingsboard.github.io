@@ -77,6 +77,15 @@ Console Log:
     let stat = document.getElementById('stat');
     let ip = document.getElementById('ip').innerHTML;
 
+    let cnsl = document.getElementById('cnsl');
+    function print(text, append = true) {
+            if (append)
+                cnsl.innerHTML += text;
+            else
+                cnsl.innerHTML = text;
+        }
+    print("Console is ready");
+
     //thingsboard device access token
     let token = "BApw7f9Vxs5AhofNrRdf";
 
@@ -86,9 +95,7 @@ Console Log:
       let win = 4;
 
       //array for saving retrived data locally
-      let x_array = [];
-      let y_array = [];
-      let z_array = [];
+      let data = [];
 
       let i = 0;
 
@@ -105,28 +112,21 @@ Console Log:
         console.log('x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z);
         if(i<win){
           //save values in the arrays
-          x_array[i] = Math.abs(la.target.x);
-          y_array[i] = Math.abs(la.target.y);
-          z_array[i] = Math.abs(la.target.z);
-          console.log("i:"+i);
+          data[i] = { x: Math.abs(la.target.x), y: Math.abs(la.target.y), z: Math.abs(la.target.z) };
+
           i++;
         }else{
           //compute standard deviation
           let j;
           
           //l_sma = 1/win * sum(x_i+y_i+z_i)
-          let l_sma = 0;
-          for(j=0; j<win; j++){
-            l_sma += x_array[j] + y_array[j] + z_array[j]
-          }
+          let l_sma = data.reduce((acc, val) => acc + val.x + val.y + val.z);
           l_sma /= win;
 
 
-          let sosd=0;
-          //sosd = (sum(x_i+y_i+z_i - l_sma)^2 / win)^1/2
-          for(j=0; j<win; j++){
-            sosd += Math.pow(x_array[j] + y_array[j] + z_array[j] - l_sma,2);
-          }
+          let sosd = data.map( val => math.pow(val.x + val.y + val.z -l_sma, 2))
+              .reduce( (acc, val) => acc + val);
+          print(sosd);
           sosd /= win;
           sosd = Math.sqrt(sosd);
           //print standard deviation on html page
