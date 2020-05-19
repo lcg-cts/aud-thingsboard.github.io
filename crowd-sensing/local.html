@@ -14,15 +14,11 @@
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
       <h1 class="display-4">Crowd sensing</h1>
-      <small>In this assignment we will built a mobile application to provide a crowd-sensing extension to our application.
-        We build on-top of the cloud-based and edge-based components developed in the first and second assignments.</small>
+      <small>Francesco Colasante</small>
     </div>
-    Francesco Colasante
   </div>
-
-  
-  <h2> Your public IP address is : </h1>
-  <h2 id="ip"> ip address</h2>
+  <h7>Your local IP address is: </h7>
+  <h7 id="ip"> ip address</h7>
   <!--Get device public ip address -->
   <script type="application/javascript">
   function getIP(json) {
@@ -30,8 +26,8 @@
     ip.innerHTML = json.ip;
   }
   </script>
-
   <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+
   <div class="card">
     <div class="card-header">
         Edge-based 
@@ -167,8 +163,5 @@ Console Log:
     //error messgae
     else lad.innerHTML = 'Linear Accelerometer not supported';
   </script>
-
-  <p> To see all the status sent in the last hour go to this <a href="https://demo.thingsboard.io:/dashboard/2169c140-9443-11ea-9a66-358c6522b855?publicId=d2ff5950-6a96-11ea-8e0a-7d0ef2a682d3"> dashboard </a> developed thank to <a href="https://thingsboard.io">ThingsBoard</a> </p>
-
 </body>
 </html>
