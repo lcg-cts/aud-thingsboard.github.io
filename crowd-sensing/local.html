@@ -109,7 +109,7 @@ Console Log:
         z.style.width = la.target.z*100 + "%";
 
         lad.innerHTML = 'x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z;
-        console.log('x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z);
+        print('x: ' + la.target.x + '<br> y: ' + la.target.y + '<br> z: ' + la.target.z);
         if(i<win){
           //save values in the arrays
           data[i] = { x: Math.abs(la.target.x), y: Math.abs(la.target.y), z: Math.abs(la.target.z) };
@@ -122,8 +122,7 @@ Console Log:
           //l_sma = 1/win * sum(x_i+y_i+z_i)
           let l_sma = data.reduce((acc, val) => acc + val.x + val.y + val.z);
           l_sma /= win;
-
-
+          print(l_sma);
           let sosd = data.map( val => math.pow(val.x + val.y + val.z -l_sma, 2))
               .reduce( (acc, val) => acc + val);
           print(sosd);
