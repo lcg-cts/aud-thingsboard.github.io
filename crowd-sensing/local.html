@@ -155,9 +155,7 @@ Console Log:
 
           //restert the loop
           i=0;
-          x_array[i] = Math.abs(la.target.x);
-          y_array[i] = Math.abs(la.target.y);
-          z_array[i] = Math.abs(la.target.z);
+          data[i] = { x: Math.abs(la.target.x), y: Math.abs(la.target.y), z: Math.abs(la.target.z) };
         }
       });
       //start the sensor
