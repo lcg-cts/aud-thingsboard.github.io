@@ -120,7 +120,7 @@ Console Log:
           //compute standard deviation
           let j;
           print("Calculating data", false);
-          print(JSON.stringify(data));
+          print("Data" + JSON.stringify(data));
           //l_sma = 1/win * sum(x_i+y_i+z_i)
           let l_sma = data.map(val => val.x + val.y + val.z).reduce( (acc, val) => acc + val);
           l_sma /= win;
@@ -128,7 +128,7 @@ Console Log:
           let tmp = data.map( val => math.pow(val.x + val.y + val.z -l_sma, 2) );
           print("TMP:"+ JSON.stringify(tmp) + '<br>');
           let sosd = tmp.reduce( (acc, val) => acc + val);
-          print(sosd);
+          print("sosd" + sosd);
           sosd /= win;
           sosd = Math.sqrt(sosd);
           //print standard deviation on html page
