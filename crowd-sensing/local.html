@@ -119,6 +119,7 @@ Console Log:
         }else{
           //compute standard deviation
           let j;
+          print("Calculating data", false);
           print(JSON.stringify(data));
           //l_sma = 1/win * sum(x_i+y_i+z_i)
           let l_sma = data.reduce((acc, val) => acc + val.x + val.y + val.z);
