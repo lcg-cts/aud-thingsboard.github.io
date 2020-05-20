@@ -80,7 +80,7 @@ Console Log:
     let cnsl = document.getElementById('cnsl');
     function print(text, append = true) {
             if (append)
-                cnsl.innerHTML += text;
+                cnsl.innerHTML += text + '<br>';
             else
                 cnsl.innerHTML = text;
         }
@@ -124,9 +124,9 @@ Console Log:
           //l_sma = 1/win * sum(x_i+y_i+z_i)
           let l_sma = data.map(val => val.x + val.y + val.z).reduce( (acc, val) => acc + val);
           l_sma /= win;
-          print(JSON.stringify(l_sma));
+          print("LSMA:" + JSON.stringify(l_sma));
           let tmp = data.map( val => math.pow(val.x + val.y + val.z -l_sma, 2) );
-          print(JSON.stringify(tmp));
+          print("TMP:"+ JSON.stringify(tmp) + '<br>');
           let sosd = tmp.reduce( (acc, val) => acc + val);
           print(sosd);
           sosd /= win;
