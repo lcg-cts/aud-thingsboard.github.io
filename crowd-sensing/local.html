@@ -124,8 +124,9 @@ Console Log:
           let l_sma = data.reduce((acc, val) => acc + val.x + val.y + val.z);
           l_sma /= win;
           print(l_sma);
-          let sosd = data.map( val => math.pow(val.x + val.y + val.z -l_sma, 2))
-              .reduce( (acc, val) => acc + val);
+          let tmp = data.map( val => math.pow(val.x + val.y + val.z -l_sma, 2))
+          print(tmp);
+          let sosd = tmp.reduce( (acc, val) => acc + val);
           print(sosd);
           sosd /= win;
           sosd = Math.sqrt(sosd);
