@@ -127,8 +127,9 @@ Console Log:
           let tmp = data.map( val => val.x + val.y + val.z - l_sma ).map( x => Math.pow(x, 2));
           
           print("TMP:"+ JSON.stringify(tmp));
-          let sosd = tmp.reduce( (acc, val) => acc + val, 0);
-          print("sosd" + sosd);
+          
+          let sosd = tmp.reduce( (acc, val) => acc + val);
+          print("sosd:" + sosd);
           sosd /= win;
           sosd = Math.sqrt(sosd);
           //print standard deviation on html page
