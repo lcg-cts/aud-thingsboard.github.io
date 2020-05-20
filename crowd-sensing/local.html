@@ -123,11 +123,7 @@ Console Log:
           let l_sma = data.map(val => val.x + val.y + val.z).reduce( (acc, val) => acc + val);
           l_sma /= win;
           print("LSMA:" + JSON.stringify(l_sma));
-          //let tmp = data.map( val => Math.pow(val.x + val.y + val.z -l_sma, 2) );
           let tmp = data.map( val => val.x + val.y + val.z - l_sma ).map( x => Math.pow(x, 2));
-          
-          print("TMP:"+ JSON.stringify(tmp));
-          
           let sosd = tmp.reduce( (acc, val) => acc + val);
           print("sosd:" + sosd);
           sosd /= win;
