@@ -122,7 +122,11 @@ Console Log:
           print("Calculating data", false);
           print(JSON.stringify(data));
           //l_sma = 1/win * sum(x_i+y_i+z_i)
-          let l_sma = data.reduce((acc, val) => acc + val.x + val.y + val.z);
+          let l_sma = data.reduce((acc, val) => {
+            print(val); print(acc);
+            return acc + val.x + val.y + val.z
+            }
+            );
           l_sma /= win;
           print(l_sma);
           let tmp = data.map( val => math.pow(val.x + val.y + val.z -l_sma, 2))
